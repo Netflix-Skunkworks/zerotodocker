@@ -9,7 +9,7 @@ RUN apt-get update &&\
   rm /apache-tomcat-*.tar.gz* &&\
   mv /apache-tomcat-7.0.56 /tomcat &&\
   cd /tomcat/webapps &&\
-  rm -Rf ROOT docs examples
+  rm -Rf ROOT docs examples host-manager manager
   
 EXPOSE 8080
 
