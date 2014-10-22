@@ -23,7 +23,7 @@ docker build -t netflixoss-exhibitor:1.5.2 .
 cd ..
 
 cd zuul
-docker build -t netflixoss-zuul:1.0.24 .
+docker build -t netflixoss-zuul:1.0.28 .
 cd ..
 
 cd hello-netflix-oss-buildwar
