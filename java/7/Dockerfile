@@ -1,5 +1,5 @@
 FROM ubuntu:trusty
-MAINTAINER Andrew Spyker <aspyker@netflix.com>
+MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 # From https://github.com/tifayuki/docker-image-java/blob/master/7/Dockerfile
 # Copied to ensure trusted builds originate entirely from Netflix
