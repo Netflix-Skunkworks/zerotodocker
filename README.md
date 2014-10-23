@@ -9,4 +9,4 @@ See the wiki for information
 
 See Dockerhub for pre-built trusted images *Coming Soon*
 
-[Dockerhub] https://registry.hub.docker.com/repos/Netflix/
+[Dockerhub] (https://registry.hub.docker.com/repos/Netflix/)
