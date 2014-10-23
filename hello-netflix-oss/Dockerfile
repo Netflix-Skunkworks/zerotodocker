@@ -1,13 +1,11 @@
 FROM netflixoss-tomcat:7
 
-ADD hello-netflix-oss-1.0.26.war /hello-netflix-oss-1.0.26.war
-
 RUN cd /tomcat/webapps &&\
   mkdir ROOT &&\
   cd ROOT &&\
-  cp /hello-netflix-oss-1.0.26.war . &&\
-  jar xf hello-netflix-oss-1.0.26.war &&\
-  rm hello-netflix-oss-1.0.26.war &&\
+  wget -q http://repo1.maven.org/maven2/com/netflix/karyon/hello-netflix-oss/1.0.27/hello-netflix-oss-1.0.27.war &&\
+  jar xf hello-netflix-oss-1.0.27.war &&\
+  rm hello-netflix-oss-1.0.27.war &&\
   rm WEB-INF/classes/hello-netflix-oss-dev.properties &&\
   rm WEB-INF/classes/hello-netflix-oss.properties &&\
   rm WEB-INF/classes/eureka-client.properties
