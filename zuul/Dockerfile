@@ -1,4 +1,4 @@
-FROM netflixoss-tomcat:7
+FROM netflixoss/tomcat:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 RUN cd /tomcat/webapps &&\

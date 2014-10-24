@@ -1,4 +1,4 @@
-FROM netflixoss-tomcat:7
+FROM netflixoss/tomcat:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 RUN wget -q https://github.com/Netflix/asgard/releases/download/asgard-1.5/asgard.war &&\
