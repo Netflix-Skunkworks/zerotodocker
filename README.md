@@ -1,12 +1,14 @@
 zerotodocker
 ============
 
-Dockerfiles to be used to create Dockerhub trusted builds of NetflixOSS
+Zero To Docker is a project to help accelerate the evaluation of [NetflixOSS] (http://netflix.github.io).
 
-See the wiki for information
+The Docker images created are not intended to be used in production as is. The Docker images created are to allow for easier evaluation of the various NetflixOSS technologies, similar to many other published open source Docker images. Netflix continues to run our cloud deployments on virtual machines leveraging the deep IaaS support of Amazon EC2.
 
-[wiki] (https://github.com/Netflix-Skunkworks/zerotodocker/wiki)
+Ready to run? See Dockerhub for pre-built trusted images:
 
-See Dockerhub for pre-built trusted images *Coming Soon*
+[Dockerhub] (https://hub.docker.com/u/netflixoss/)
 
-[Dockerhub] (https://registry.hub.docker.com/repos/Netflix/)
+More details?  See the wiki for information:
+
+[Wiki] (https://github.com/Netflix-Skunkworks/zerotodocker/wiki)
