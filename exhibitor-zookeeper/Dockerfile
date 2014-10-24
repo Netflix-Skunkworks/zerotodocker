@@ -1,4 +1,4 @@
-FROM netflixoss-java:7
+FROM netflixoss/java:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 RUN apt-get update &&\
