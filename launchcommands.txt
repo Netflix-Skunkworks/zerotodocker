@@ -4,8 +4,13 @@ docker run -d --name eureka -d netflixoss/eureka:1.1.142
 docker run -d --name hello-netflix-oss --link eureka:eureka netflixoss/hello-netflix-oss:1.0.27	
 docker run -e "origin.zuul.client.DeploymentContextBasedVipAddresses=HELLO-NETFLIX-OSS" -d --name zuul --link eureka:eureka netflixoss/zuul:1.0.28
 
-http://ASGARD:8080/
 http://EXHIBITOR:8080/exhibitor/v1/ui/index.html
+
 http://EUREKA:8080/eureka/
+
 http://HELLONETFLIXOSS:8080/
+http://HELLONETFLIXOSS:8077/
+
 http://ZUUL:8080/
+
+http://ASGARD:8080/
