@@ -9,6 +9,7 @@ Ready to run? See Dockerhub for pre-built trusted images:
 
 [Dockerhub] (https://hub.docker.com/u/netflixoss/)
 
-More details?  See the wiki for information:
+More details?  See the wiki and release announcement blog for information:
 
 [Wiki] (https://github.com/Netflix-Skunkworks/zerotodocker/wiki)
+[Blog - Coming Soon] (http://localhost)
