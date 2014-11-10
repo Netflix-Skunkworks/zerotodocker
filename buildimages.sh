@@ -44,6 +44,24 @@ cd hello-netflix-oss
 docker build -t netflixoss/hello-netflix-oss:1.0.27 .
 cd ..
 
+## SECURITY MONKEY ##
+
+cd security_monkey/security_monkey-api
+docker build -t netflixoss/security_monkey-api:latest .
+cd ../..
+
+cd security_monkey/security_monkey-apiinit
+docker build -t netflixoss/security_monkey-apiinit:latest .
+cd ../..
+
+cd security_monkey/security_monkey-nginx
+docker build -t netflixoss/security_monkey-nginx:latest .
+cd ../..
+
+cd security_monkey/security_monkey-scheduler
+docker build -t netflixoss/security_monkey-scheduler:latest .
+cd ../..
+
 # TODO Cassandra/Priam
 
 # TODO Chaos Monkey
