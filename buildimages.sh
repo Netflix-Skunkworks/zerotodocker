@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+## BASE IMAGES ##
+
 cd java/7
 docker build -t netflixoss/java:7 .
 cd ../..
@@ -22,7 +24,7 @@ cd tomcat/7
 docker build -t netflixoss/tomcat:7 .
 cd ../..
 
-
+## PLATFORM ##
 
 cd asgard
 docker build -t netflixoss/asgard:1.5 .
@@ -61,7 +63,3 @@ cd ../..
 cd security_monkey/security_monkey-scheduler
 docker build -t netflixoss/security_monkey-scheduler:0.2.0 .
 cd ../..
-
-# TODO Cassandra/Priam
-
-# TODO Chaos Monkey
