@@ -14,3 +14,21 @@ http://HELLONETFLIXOSS:8077/
 http://ZUUL:8080/
 
 http://ASGARD:8080/
+
+## SECURITY_MONKEY ##
+# See the wiki page for more information.
+
+docker run -d --name security_monkey-postgres postgres:9.3.5
+docker run -i -t --name security_monkey-apiinit --link security_monkey-postgres:postgres netflixoss/security_monkey-apiinit:0.2.0
+
+cp boto.cfg.example boto.cfg
+
+docker run -i -d --name security_monkey-api --link security_monkey-postgres:postgres -v `pwd`/boto.cfg:/etc/boto.cfg:ro netflixoss/security_monkey-api:0.2.0
+docker run -i -d --name security_monkey-nginx --link security_monkey-api:smapi netflixoss/security_monkey-nginx:0.2.0
+
+https://SECURITY_MONKEY_NGINX/register
+https://SECURITY_MONKEY_NGINX/#/createaccount
+
+docker run -i -d --name security_monkey-scheduler --link security_monkey-postgres:postgres -v `pwd`/boto.cfg:/etc/boto.cfg:ro netflixoss/security_monkey-scheduler:0.2.0
+
+https://SECURITY_MONKEY_NGINX/#/
