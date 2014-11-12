@@ -32,3 +32,11 @@ https://SECURITY_MONKEY_NGINX/#/createaccount
 docker run -i -d --name security_monkey-scheduler --link security_monkey-postgres:postgres -v `pwd`/boto.cfg:/etc/boto.cfg:ro netflixoss/security_monkey-scheduler:0.2.0
 
 https://SECURITY_MONKEY_NGINX/#/
+
+## Sketchy ##
+docker run -d --name sketchy_redis redis:2.8.9
+docker run -d --name sketchy_celery --link sketchy_redis:sketchy_redis netflixoss/sketchy-api:1 celery
+docker run -d --name sketchy_api --link sketchy_redis:sketchy_redis netflixoss/sketchy-api:1 api
+docker run -d --name sketchy_nginx --link sketchy_api:sketchyapi netflixoss/sketchy-nginx:1
+
+https://SKETCHY_NGINX/eager?url=http://google.com&type=sketch
