@@ -63,3 +63,14 @@ cd ../..
 cd security_monkey/security_monkey-scheduler
 docker build -t netflixoss/security_monkey-scheduler:0.2.0 .
 cd ../..
+
+## SKETCHY ##
+
+cd sketchy/sketchy_api
+docker build -t netflixoss/sketchy-api:1 .
+cd ../..
+
+cd sketchy/sketchy_nginx
+docker build -t netflixoss/sketchy-nginx:1 .
+cd ../..
+
