@@ -67,10 +67,10 @@ cd ../..
 ## SKETCHY ##
 
 cd sketchy/sketchy_api
-docker build -t netflixoss/sketchy-api:1 .
+docker build -t netflixoss/sketchy-api:1.0.0 .
 cd ../..
 
 cd sketchy/sketchy_nginx
-docker build -t netflixoss/sketchy-nginx:1 .
+docker build -t netflixoss/sketchy-nginx:1.0.0 .
 cd ../..
 
