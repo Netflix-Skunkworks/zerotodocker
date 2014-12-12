@@ -20,6 +20,10 @@ cd java/7
 docker build -t netflixoss/java:7 .
 cd ../..
 
+cd java/8
+docker build -t netflixoss/java:8 .
+cd ../..
+
 cd tomcat/7
 docker build -t netflixoss/tomcat:7 .
 cd ../..
