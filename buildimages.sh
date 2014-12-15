@@ -78,3 +78,8 @@ cd sketchy/sketchy_nginx
 docker build -t netflixoss/sketchy-nginx:1.0.0 .
 cd ../..
 
+## EDDA ##
+cd edda/2.1
+docker build -t netflixoss/edda:2.1 .
+cd ../..
+
