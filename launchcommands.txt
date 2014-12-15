@@ -42,3 +42,5 @@ docker run -d --name sketchy_nginx --link sketchy_api:sketchyapi netflixoss/sket
 
 https://SKETCHY_NGINX/eager?url=http://google.com&type=sketch
 
+## Edda ##
+docker run -d --name edda -v `pwd`/edda/2.1/edda.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/edda.properties netflixoss/edda:2.1
