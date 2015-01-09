@@ -30,8 +30,8 @@ cd ../..
 
 ## PLATFORM ##
 
-cd asgard
-docker build -t netflixoss/asgard:1.5 .
+cd asgard/1.5.1
+docker build -t netflixoss/asgard:1.5.1 .
 cd ..
 
 cd eureka
