@@ -53,19 +53,19 @@ cd ..
 ## SECURITY MONKEY ##
 
 cd security_monkey/security_monkey-api
-docker build -t netflixoss/security_monkey-api:0.2.0 .
+docker build -t netflixoss/security_monkey-api:0.3.3 .
 cd ../..
 
 cd security_monkey/security_monkey-apiinit
-docker build -t netflixoss/security_monkey-apiinit:0.2.0 .
+docker build -t netflixoss/security_monkey-apiinit:0.3.3 .
 cd ../..
 
 cd security_monkey/security_monkey-nginx
-docker build -t netflixoss/security_monkey-nginx:0.2.0 .
+docker build -t netflixoss/security_monkey-nginx:0.3.3 .
 cd ../..
 
 cd security_monkey/security_monkey-scheduler
-docker build -t netflixoss/security_monkey-scheduler:0.2.0 .
+docker build -t netflixoss/security_monkey-scheduler:0.3.3 .
 cd ../..
 
 ## SKETCHY ##

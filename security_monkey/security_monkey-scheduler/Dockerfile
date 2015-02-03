@@ -17,7 +17,7 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 RUN apt-get update &&\
   apt-get -y -q install python-software-properties software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3 curl &&\
-  apt-get install -y python-pip python-dev python-psycopg2 libpq-dev git sudo &&\
+  apt-get install -y python-pip python-dev python-psycopg2 libpq-dev git sudo swig python-m2crypto &&\
   cd /usr/local/src &&\
   git clone --depth 1 --branch master https://github.com/Netflix/security_monkey.git &&\
   cd security_monkey &&\
