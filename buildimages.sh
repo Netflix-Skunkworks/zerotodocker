@@ -35,7 +35,12 @@ docker build -t netflixoss/asgard:1.5 .
 cd ..
 
 cd eureka
+cd 1.1.142
 docker build -t netflixoss/eureka:1.1.142 .
+cd ..
+cd 1.1.147
+docker build -t netflixoss/eureka:1.1.147 .
+cd ..
 cd ..
 
 cd exhibitor-zookeeper
