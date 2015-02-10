@@ -16,7 +16,7 @@ FROM netflixoss/tomcat:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 # Install some packages that we'll need or will be useful later
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim && pip install --no-input --upgrade pip && pip install --no-input ipython
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim && pip install --no-input --upgrade pip
 
 # Properties to set
 ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie2 -Darchaius.deployment.environment=dev"
