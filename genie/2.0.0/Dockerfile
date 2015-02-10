@@ -16,7 +16,7 @@ FROM netflixoss/tomcat:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 # Properties to set
-ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie2 -Darchaius.deployment.environment=dev"
+ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie -Darchaius.deployment.environment=dev"
 
 # Download and configure the Genie WAR file and Genie Jobs directory where job results will be stored
 RUN wget -q -P /tomcat/webapps 'http://repo1.maven.org/maven2/com/netflix/genie/genie-web/2.0.0/genie-web-2.0.0.war' &&\
@@ -45,7 +45,7 @@ RUN mkdir /tmp/genie-server &&\
 
 # Modify default properties to map to the Docker image locations and settings
 RUN sed -i 's/netflix.appinfo.port=7001/netflix.appinfo.port=8080/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i 's/netflix.appinfo.name=genie/netflix.appinfo.name=genie2/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+#  sed -i 's/netflix.appinfo.name=genie/netflix.appinfo.name=genie2/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i 's/netflix.genie.server.user.working.dir=\/mnt\/tomcat\/genie-jobs/netflix.genie.server.user.working.dir=\/tomcat\/webapps\/genie-jobs/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i 's/netflix.genie.server.java.home=\/usr\/lib\/jvm\/java-6-sun/netflix.genie.server.java.home=\/usr\/lib\/jvm\/java-7-oracle/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '54s/\/apps\/hadoop\/current/\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
@@ -60,9 +60,10 @@ RUN mkdir -p /apps/genie/bin &&\
   chmod 755 /apps/genie/bin/jobkill.sh &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.0.0/genie-web/conf/system/apps/genie/bin/joblauncher.sh' &&\
   chmod 755 /apps/genie/bin/joblauncher.sh &&\
+  sed -i '77s/conf/etc\/hadoop/' /apps/genie/bin/joblauncher.sh &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.0.0/genie-web/conf/system/apps/genie/bin/localCleanup.py' &&\
   chmod 755 /apps/genie/bin/localCleanup.py &&\
-  wget -q -P /apps/genie/bin 'https://github.com/Netflix/genie/blob/2.0.0/genie-web/conf/system/apps/genie/bin/timeout3' &&\
+  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.0.0/genie-web/conf/system/apps/genie/bin/timeout3' &&\
   chmod 755 /apps/genie/bin/timeout3
 
 # Below here optional to run Genie and can be different for different deployments
