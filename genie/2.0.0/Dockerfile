@@ -81,8 +81,10 @@ ENV HADOOP_HOME=/apps/hadoop/2.6.0
 ENV HADOOP_PREFIX=$HADOOP_HOME
 ENV PATH=$HADOOP_HOME/bin:$PATH
 
-#ADD hadoop/2.6.0/conf/*.xml $HADOOP_HOME/etc/hadoop/
-ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
+# This is not needed to get Genie working as the scripts loaded into conf below can be copied at runtime
+# I'm just adding them here so that all hadoop/pig/hive commands can connect to the cluster from Genie node by default
+# in case someone wants to mess around with them as a client
+ADD hadoop/2.6.0/conf/*.xml $HADOOP_HOME/etc/hadoop/
 
 # Download and configure pig client
 RUN mkdir -p /apps/pig/0.14.0 &&\
@@ -117,6 +119,7 @@ RUN apt-get update &&\
   pip install nflx-genie-client==2.0.0
 
 # Put the example scripts onto the image if people want to use them
+ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
 ADD example/*.py /apps/genie/example/
 
 EXPOSE 8080
