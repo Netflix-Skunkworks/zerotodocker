@@ -36,18 +36,17 @@ RUN mkdir /tmp/genie-server &&\
   cd /tmp/genie-server/ &&\
   jar xf genie-server-2.0.0.jar &&\
   rm genie-server-2.0.0.jar &&\
-  sed -i 's/127.0.0.1/mysql-genie/' genie-jpa.xml &&\
-  sed -i 's/name="password" value=""/name="password" value="genie"/' genie-jpa.xml &&\
+  sed -i '54s/127.0.0.1/mysql-genie/' genie-jpa.xml &&\
+  sed -i '56s/value=""/value="genie"/' genie-jpa.xml &&\
   jar cf genie-server-2.0.0.jar * &&\
   mv genie-server-2.0.0.jar /tomcat/webapps/ROOT/WEB-INF/lib/ &&\
   cd /tomcat &&\
   rm -rf /tmp/genie-server
 
 # Modify default properties to map to the Docker image locations and settings
-RUN sed -i 's/netflix.appinfo.port=7001/netflix.appinfo.port=8080/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-#  sed -i 's/netflix.appinfo.name=genie/netflix.appinfo.name=genie2/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i 's/netflix.genie.server.user.working.dir=\/mnt\/tomcat\/genie-jobs/netflix.genie.server.user.working.dir=\/tomcat\/webapps\/genie-jobs/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i 's/netflix.genie.server.java.home=\/usr\/lib\/jvm\/java-6-sun/netflix.genie.server.java.home=\/usr\/lib\/jvm\/java-7-oracle/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+RUN sed -i '22s/7001/8080/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '77s/\/mnt\/tomcat\/genie-jobs/\/tomcat\/webapps\/genie-jobs/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '51s/\/usr\/lib\/jvm\/java-6-sun/\/usr\/lib\/jvm\/java-7-oracle/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '54s/\/apps\/hadoop\/current/\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '56s/netflix.genie.server.hadoop.2.4.0.home=\/apps\/hadoop\/2.4.0/netflix.genie.server.hadoop.2.6.0.home=\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '55d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
@@ -82,7 +81,7 @@ ENV HADOOP_HOME=/apps/hadoop/2.6.0
 ENV HADOOP_PREFIX=$HADOOP_HOME
 ENV PATH=$HADOOP_HOME/bin:$PATH
 
-ADD hadoop/2.6.0/conf/*.xml $HADOOP_HOME/etc/hadoop/
+#ADD hadoop/2.6.0/conf/*.xml $HADOOP_HOME/etc/hadoop/
 ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
 
 # Download and configure pig client
@@ -111,13 +110,14 @@ RUN mkdir -p /apps/hive/1.0.0 &&\
 ENV HIVE_HOME=/apps/hive/1.0.0
 ENV PATH=$HIVE_HOME/bin:$PATH
 
-# Install some packages that will be used for bootstrapping
+# Install some packages that will be used for the example
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim &&\
   python -m pip install --no-input --upgrade --force pip &&\
   pip install nflx-genie-client==2.0.0
 
-ADD setup/setup.py /apps/genie/setup/
+# Put the example scripts onto the image if people want to use them
+ADD example/*.py /apps/genie/example/
 
 EXPOSE 8080
 
