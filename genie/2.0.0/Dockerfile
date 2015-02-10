@@ -82,6 +82,7 @@ ENV HADOOP_PREFIX=$HADOOP_HOME
 ENV PATH=$HADOOP_HOME/bin:$PATH
 
 ADD hadoop/2.6.0/conf/*.xml $HADOOP_HOME/etc/hadoop/
+ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
 
 # Download and configure pig client
 RUN mkdir -p /apps/pig/0.14.0 &&\
@@ -113,7 +114,9 @@ ENV PATH=$HIVE_HOME/bin:$PATH
 RUN apt-get update &&\
   DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim &&\
   python -m pip install --no-input --upgrade --force pip &&\
-  pip install nflx-genie-client
+  pip install nflx-genie-client==2.0.0
+
+ADD setup/setup.py /apps/genie/setup/
 
 EXPOSE 8080
 
