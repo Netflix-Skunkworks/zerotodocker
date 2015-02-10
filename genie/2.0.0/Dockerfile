@@ -15,9 +15,6 @@
 FROM netflixoss/tomcat:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
-# Install some packages that we'll need or will be useful later
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim && pip install --no-input --upgrade pip
-
 # Properties to set
 ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie2 -Darchaius.deployment.environment=dev"
 
@@ -68,6 +65,8 @@ RUN mkdir -p /apps/genie/bin &&\
   wget -q -P /apps/genie/bin 'https://github.com/Netflix/genie/blob/2.0.0/genie-web/conf/system/apps/genie/bin/timeout3' &&\
   chmod 755 /apps/genie/bin/timeout3
 
+# Below here optional to run Genie and can be different for different deployments
+
 # Download and configure hadoop client
 RUN mkdir -p /apps/hadoop/2.6.0 &&\
   cd /apps/hadoop/2.6.0 &&\
@@ -109,6 +108,12 @@ RUN mkdir -p /apps/hive/1.0.0 &&\
 
 ENV HIVE_HOME=/apps/hive/1.0.0
 ENV PATH=$HIVE_HOME/bin:$PATH
+
+# Install some packages that will be used for bootstrapping
+RUN apt-get update &&\
+  DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim &&\
+  python -m pip install --no-input --upgrade --force pip &&\
+  pip install nflx-genie-client
 
 EXPOSE 8080
 

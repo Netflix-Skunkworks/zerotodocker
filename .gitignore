@@ -1,3 +1,6 @@
 .project
 .ropeproject
 boto.cfg
+
+# IntelliJ Files
+.idea
