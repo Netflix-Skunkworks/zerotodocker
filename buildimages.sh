@@ -88,3 +88,7 @@ cd edda/2.1
 docker build -t netflixoss/edda:2.1 .
 cd ../..
 
+## Genie ##
+cd genie/2.0.0
+docker build -t netflixoss/genie:2.0.0 .
+cd ../..
