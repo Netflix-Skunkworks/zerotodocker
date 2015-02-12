@@ -32,7 +32,7 @@ cd ../..
 
 cd asgard/1.5.1
 docker build -t netflixoss/asgard:1.5.1 .
-cd ..
+cd ../..
 
 cd eureka
 cd 1.1.142
