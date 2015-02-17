@@ -36,8 +36,8 @@ RUN mkdir /tmp/genie-server &&\
   cd /tmp/genie-server/ &&\
   jar xf genie-server-2.1.0.jar &&\
   rm genie-server-2.1.0.jar &&\
-  sed -i '54s/127.0.0.1/mysql-genie/' genie-jpa.xml &&\
-  sed -i '56s/value=""/value="genie"/' genie-jpa.xml &&\
+  sed -i '69s/127.0.0.1/mysql-genie/' genie-jpa.xml &&\
+  sed -i '71s/value=""/value="genie"/' genie-jpa.xml &&\
   jar cf genie-server-2.1.0.jar * &&\
   mv genie-server-2.1.0.jar /tomcat/webapps/ROOT/WEB-INF/lib/ &&\
   cd /tomcat &&\
