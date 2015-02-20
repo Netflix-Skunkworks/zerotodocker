@@ -16,18 +16,15 @@ FROM ubuntu:14.04
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 RUN apt-get update &&\
-  apt-get -y -q install python-software-properties software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3 curl &&\
+  apt-get -y -q install python-software-properties software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3 &&\
   apt-get install -y python-pip python-dev python-psycopg2 libpq-dev git sudo swig python-m2crypto &&\
   cd /usr/local/src &&\
-  git clone --depth 1 --branch master https://github.com/Netflix/security_monkey.git &&\
+  git clone -b v0.3.4 https://github.com/Netflix/security_monkey.git &&\
   cd security_monkey &&\
-  python setup.py install &&\
-  /bin/mkdir -p /var/log/security_monkey/
+  python setup.py install
+  
+ADD api-init.sh /usr/local/src/security_monkey/scripts/api-init.sh
 
-ADD scheduler-start.sh /usr/local/src/security_monkey/scripts/scheduler-start.sh
-ADD config-deploy.py /usr/local/src/security_monkey/env-config/config-deploy.py
-
-RUN chmod +x /usr/local/src/security_monkey/scripts/scheduler-start.sh
-
-ENTRYPOINT ["/usr/local/src/security_monkey/scripts/scheduler-start.sh"]
-
+RUN chmod +x /usr/local/src/security_monkey/scripts/api-init.sh
+    
+ENTRYPOINT ["/usr/local/src/security_monkey/scripts/api-init.sh"]

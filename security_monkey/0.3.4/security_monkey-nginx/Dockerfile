@@ -18,14 +18,13 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 RUN apt-get update &&\
   apt-get install -y curl git sudo apt-transport-https &&\
   cd /usr/local/src &&\
-  git clone --depth 1 --branch master https://github.com/Netflix/security_monkey.git &&\
+  git clone -b v0.3.4 https://github.com/Netflix/security_monkey.git &&\
   cd security_monkey
 
 RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
   curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list && \
   apt-get update &&\
-  apt-get install -y -q dart &&\
-  ln -s /usr/lib/dart /usr/lib/dart/bin/dart-sdk
+  apt-get install -y -q dart
 
 RUN cd /usr/local/src/security_monkey/dart &&\
   /usr/lib/dart/bin/pub build &&\
