@@ -60,7 +60,7 @@ RUN mkdir -p /apps/genie/bin &&\
   chmod 755 /apps/genie/bin/jobkill.sh &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.1.0/genie-web/conf/system/apps/genie/bin/joblauncher.sh' &&\
   chmod 755 /apps/genie/bin/joblauncher.sh &&\
-  sed -i '76s/conf/etc\/hadoop/' /apps/genie/bin/joblauncher.sh &&\
+  sed -i '228s/conf/etc\/hadoop/' /apps/genie/bin/joblauncher.sh &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.1.0/genie-web/conf/system/apps/genie/bin/localCleanup.py' &&\
   chmod 755 /apps/genie/bin/localCleanup.py &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.1.0/genie-web/conf/system/apps/genie/bin/timeout3' &&\
