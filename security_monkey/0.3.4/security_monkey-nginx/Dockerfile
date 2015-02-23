@@ -18,7 +18,7 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 RUN apt-get update &&\
   apt-get install -y curl git sudo apt-transport-https &&\
   cd /usr/local/src &&\
-  git clone --depth 1 --branch master https://github.com/Netflix/security_monkey.git &&\
+  git clone -b v0.3.4 https://github.com/Netflix/security_monkey.git &&\
   cd security_monkey
 
 RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
