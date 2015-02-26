@@ -18,8 +18,14 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 # Properties to set
 ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie -Darchaius.deployment.environment=dev"
 
-# Download and configure the Genie WAR file and Genie Jobs directory where job results will be stored
-RUN wget -q -P /tomcat/webapps 'http://repo1.maven.org/maven2/com/netflix/genie/genie-web/2.1.0/genie-web-2.1.0.war' &&\
+# Lots of commands to configure the Genie system grouped together to save on filesystem layers in Docker
+# (Lines 28-33) Download and extract the Genie WAR file
+# (34) Create the Genie Jobs directory where job results will be stored and DB connection info
+# (35-37) Enable listings in Tomcat and configure it with listings.xsl
+# (38-39) Configure the database connection to use mysql-genie Docker link as hostname and the correct password
+# (40-48) Modify default properties to map to the Docker image locations and settings
+# (49-58) Download and configure all the Genie scripts that are used to run jobs
+RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/genie-web/2.1.0/genie-web-2.1.0.war' &&\
   mkdir /tomcat/webapps/ROOT &&\
   cd /tomcat/webapps/ROOT &&\
   jar xf ../genie-web-2.1.0.war &&\
@@ -28,23 +34,10 @@ RUN wget -q -P /tomcat/webapps 'http://repo1.maven.org/maven2/com/netflix/genie/
   mkdir /tomcat/webapps/genie-jobs &&\
   wget -q -P /tomcat/conf 'https://raw.githubusercontent.com/Netflix/genie/2.1.0/genie-web/conf/system/apps/tomcat/conf/listings.xsl' &&\
   sed -i '111s/false/true/' /tomcat/conf/web.xml &&\
-  sed -i '113i\ \ \ \ \ \ \ \ <init-param>\n\ \ \ \ \ \ \ \ \ \ \ \ <param-name>globalXsltFile<\/param-name>\n\ \ \ \ \ \ \ \ \ \ \ \ <param-value>\/tomcat\/conf\/listings.xsl<\/param-value>\n\ \ \ \ \ \ \ \ <\/init-param>' /tomcat/conf/web.xml
-
-# Modify the default database properties for the mysql-genie docker link
-RUN mkdir /tmp/genie-server &&\
-  cp /tomcat/webapps/ROOT/WEB-INF/lib/genie-server-2.1.0.jar /tmp/genie-server/ &&\
-  cd /tmp/genie-server/ &&\
-  jar xf genie-server-2.1.0.jar &&\
-  rm genie-server-2.1.0.jar &&\
-  sed -i '69s/127.0.0.1/mysql-genie/' genie-jpa.xml &&\
-  sed -i '71s/value=""/value="genie"/' genie-jpa.xml &&\
-  jar cf genie-server-2.1.0.jar * &&\
-  mv genie-server-2.1.0.jar /tomcat/webapps/ROOT/WEB-INF/lib/ &&\
-  cd /tomcat &&\
-  rm -rf /tmp/genie-server
-
-# Modify default properties to map to the Docker image locations and settings
-RUN sed -i '23s/\/usr\/lib\/jvm\/java-1.7.0-sunjdk.x86_64/\/usr\/lib\/jvm\/java-7-oracle/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '113i\ \ \ \ \ \ \ \ <init-param>\n\ \ \ \ \ \ \ \ \ \ \ \ <param-name>globalXsltFile<\/param-name>\n\ \ \ \ \ \ \ \ \ \ \ \ <param-value>\/tomcat\/conf\/listings.xsl<\/param-value>\n\ \ \ \ \ \ \ \ <\/init-param>' /tomcat/conf/web.xml &&\
+  sed -i '69s/127.0.0.1/mysql-genie/' /tomcat/webapps/ROOT/WEB-INF/classes/genie-jpa.xml &&\
+  sed -i '71s/value=""/value="genie"/' /tomcat/webapps/ROOT/WEB-INF/classes/genie-jpa.xml &&\
+  sed -i '23s/\/usr\/lib\/jvm\/java-1.7.0-sunjdk.x86_64/\/usr\/lib\/jvm\/java-7-oracle/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '26s/\/apps\/hadoop\/current/\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '27s/com.netflix.genie.server.hadoop.2.4.0.home=\/apps\/hadoop\/2.4.0/com.netflix.genie.server.hadoop.2.6.0.home=\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '41s/7001/8080/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
@@ -52,10 +45,8 @@ RUN sed -i '23s/\/usr\/lib\/jvm\/java-1.7.0-sunjdk.x86_64/\/usr\/lib\/jvm\/java-
   sed -i '96,103d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '96icom.netflix.genie.server.job.manager.yarn.command.cp=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -cp -f' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '99,106d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '99icom.netflix.genie.server.job.manager.yarn.command.mkdir=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -mkdir' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties
-
-# Download all the Genie scripts that are used to run jobs
-RUN mkdir -p /apps/genie/bin &&\
+  sed -i '99icom.netflix.genie.server.job.manager.yarn.command.mkdir=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -mkdir' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  mkdir -p /apps/genie/bin &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.1.0/genie-web/conf/system/apps/genie/bin/jobkill.sh' &&\
   chmod 755 /apps/genie/bin/jobkill.sh &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.1.0/genie-web/conf/system/apps/genie/bin/joblauncher.sh' &&\
@@ -99,19 +90,6 @@ RUN mkdir -p /apps/pig/0.14.0 &&\
 
 ENV PIG_HOME=/apps/pig/0.14.0
 ENV PATH=$PIG_HOME/bin:$PATH
-
-# Download and configure hive client
-RUN mkdir -p /apps/hive/1.0.0 &&\
-  cd /apps/hive/1.0.0 &&\
-  wget -q -P /apps/hive/1.0.0 'http://apache.cs.utah.edu/hive/hive-1.0.0/apache-hive-1.0.0-bin.tar.gz' &&\
-  tar xf apache-hive-1.0.0-bin.tar.gz &&\
-  rm apache-hive-1.0.0-bin.tar.gz &&\
-  chown root:root -R apache-hive-1.0.0-bin &&\
-  mv apache-hive-1.0.0-bin/* . &&\
-  rm -rf apache-hive-1.0.0-bin
-
-ENV HIVE_HOME=/apps/hive/1.0.0
-ENV PATH=$HIVE_HOME/bin:$PATH
 
 # Install some packages that will be used for the example
 RUN apt-get update &&\
