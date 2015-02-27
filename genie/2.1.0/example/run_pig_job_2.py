@@ -33,7 +33,7 @@ genie = genie2.client.wrapper.Genie2("http://localhost:8080/genie",
 
 # Create a job instance and fill in the required parameters
 job = genie2.model.Job.Job()
-job.name = "GenieDockerExamplePigJob1"
+job.name = "GenieDockerExamplePigJob2"
 job.user = "root"
 job.version = "0.14.0"
 
@@ -57,7 +57,7 @@ job.fileDependencies = \
     "file:///apps/genie/pig/0.14.0/tutorial/script2-hadoop.pig,file:///apps/genie/pig/0.14.0/tutorial/tutorial.jar"
 
 # Any command line arguments to run along with the command.
-job.commandArgs = "script1-hadoop.pig"
+job.commandArgs = "script2-hadoop.pig"
 
 # Submit the job to Genie
 job = genie.submitJob(job)

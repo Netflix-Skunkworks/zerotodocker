@@ -106,9 +106,9 @@ print >>sys.stderr, "Successfully linked the Hadoop and Pig commands to the clus
 
 try:
     return_code = call("hadoop fs -put /apps/genie/pig/0.14.0/tutorial/excite.log.bz2", shell=True)
-    if return_code < 0:
-        print >>sys.stderr, "Child was terminated by signal", -return_code
+    if return_code == 0:
+        print >>sys.stderr, "Successfully put /apps/genie/pig/0.14.0/tutorial/excite.log.bz2 in HDFS"
     else:
-        print >>sys.stderr, "Child returned", return_code
+        print >>sys.stderr, "Failed to put /apps/genie/pig/0.14.0/tutorial/excite.log.bz2 in HDFS:", return_code
 except OSError as e:
     print >>sys.stderr, "Execution failed:", e

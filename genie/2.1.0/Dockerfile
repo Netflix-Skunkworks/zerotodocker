@@ -99,7 +99,7 @@ RUN apt-get update &&\
 
 # Put the example scripts onto the image if people want to use them
 ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
-ADD pig/0.14.0/tutorial/* /apps/genie/pig/0.14.0/tutorial
+ADD pig/0.14.0/tutorial/* /apps/genie/pig/0.14.0/tutorial/
 ADD example/*.py /apps/genie/example/
 
 EXPOSE 8080
