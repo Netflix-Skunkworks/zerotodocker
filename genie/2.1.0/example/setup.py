@@ -22,6 +22,8 @@
 import genie2.client.wrapper
 import genie2.model.Command
 import genie2.model.Cluster
+import sys
+from subprocess import call
 
 # Create a Genie client which proxies API calls through wrapper which retries failures based on various return codes
 genie = genie2.client.wrapper.Genie2("http://localhost:8080/genie",
@@ -38,8 +40,9 @@ hadoop_command.user = "root"
 hadoop_command.version = "2.6.0"
 hadoop_command.jobType = "hadoop"
 hadoop_command.tags = list()
-hadoop_command.tags.append("hadoop")
-hadoop_command.tags.append("mr2")
+hadoop_command.tags.append("type:hadoop")
+hadoop_command.tags.append("ver:2.6.0")
+hadoop_command.tags.append("misc:mr2")
 hadoop_command.status = "ACTIVE"
 hadoop_command.executable = "/apps/hadoop/2.6.0/bin/hadoop"
 
@@ -47,6 +50,8 @@ hadoop_command.executable = "/apps/hadoop/2.6.0/bin/hadoop"
 # cmd.id = "hadoop240"
 
 hadoop_command = genie.createCommand(hadoop_command)
+
+print >>sys.stderr, "Successfully registered the Hadoop command with Genie. Command id =", hadoop_command.id
 
 commands.append(hadoop_command)
 
@@ -57,29 +62,31 @@ pig_command.user = "root"
 pig_command.version = "0.14.0"
 pig_command.jobType = "pig"
 pig_command.tags = list()
-pig_command.tags.append("pig")
-pig_command.tags.append("0.14.0")
-pig_command.tags.append("mr2")
+pig_command.tags.append("type:pig")
+pig_command.tags.append("ver:0.14.0")
+pig_command.tags.append("misc:mr2")
 pig_command.status = "ACTIVE"
 pig_command.executable = "/apps/pig/0.14.0/bin/pig"
 
 # Could set command id here or let it be set automatically
-# cmd.id = "hadoop240"
+# cmd.id = "pig14"
 
 pig_command = genie.createCommand(pig_command)
+
+print >>sys.stderr, "Successfully registered the Pig command with Genie. Command id =", pig_command.id
 
 commands.append(pig_command)
 
 cluster = genie2.model.Cluster.Cluster()
-cluster.name = "h2prod"
+cluster.name = "h2query"
 cluster.version = "2.6.0"
 cluster.user = "root"
 cluster.status = "UP"
 cluster.clusterType = "yarn"
 cluster.tags = list()
-cluster.tags.append("prod")
-cluster.tags.append("yarn")
-cluster.tags.append("sla")
+cluster.tags.append("sched:adhoc")
+cluster.tags.append("type:yarn")
+cluster.tags.append("ver:2.4.0")
 cluster.configs = list()
 cluster.configs.append("file:///apps/genie/hadoop/2.6.0/conf/core-site.xml")
 cluster.configs.append("file:///apps/genie/hadoop/2.6.0/conf/mapred-site.xml")
@@ -90,5 +97,18 @@ cluster.configs.append("file:///apps/genie/hadoop/2.6.0/conf/yarn-site.xml")
 
 cluster = genie.createCluster(cluster)
 
+print >>sys.stderr, "Successfully registered the Hadoop cluster with Genie. Cluster id =", cluster.id
+
 # Add the commands to the cluster
 commands = genie.addCommandsForCluster(cluster.id, commands)
+
+print >>sys.stderr, "Successfully linked the Hadoop and Pig commands to the cluster"
+
+try:
+    return_code = call("hadoop fs -put /apps/genie/pig/0.14.0/tutorial/excite.log.bz2", shell=True)
+    if return_code < 0:
+        print >>sys.stderr, "Child was terminated by signal", -return_code
+    else:
+        print >>sys.stderr, "Child returned", return_code
+except OSError as e:
+    print >>sys.stderr, "Execution failed:", e

@@ -35,20 +35,20 @@ genie = genie2.client.wrapper.Genie2("http://localhost:8080/genie",
 job = genie2.model.Job.Job()
 job.name = "GenieDockerExampleHadoopJob"
 job.user = "root"
-job.version = "0.0.1"
+job.version = "2.6.0"
 
 # Create a list of cluster criterias which determine the cluster to run the job on
 job.clusterCriterias = list()
 cluster_criteria = genie2.model.ClusterCriteria.ClusterCriteria()
 criteria = set()
-criteria.add("prod")
-criteria.add("yarn")
+criteria.add("sched:adhoc")
+criteria.add("type:yarn")
 cluster_criteria.tags = criteria
 job.clusterCriterias.append(cluster_criteria)
 
 # Create the set of command criteria which will determine what command Genie executes for the job
 command_criteria = set()
-command_criteria.add("hadoop")
+command_criteria.add("type:hadoop")
 job.commandCriteria = command_criteria
 
 # Any command line arguments to run along with the command. In this case it holds the actual query but this

@@ -74,7 +74,7 @@ ENV HADOOP_PREFIX=$HADOOP_HOME
 ENV PATH=$HADOOP_HOME/bin:$PATH
 
 # This is not needed to get Genie working as the scripts loaded into conf below can be copied at runtime
-# I'm just adding them here so that all hadoop/pig/hive commands can connect to the cluster from Genie node by default
+# I'm just adding them here so that the hadoop and pig commands can connect to the cluster from Genie node by default
 # in case someone wants to mess around with them as a client
 ADD hadoop/2.6.0/conf/*.xml $HADOOP_HOME/etc/hadoop/
 
@@ -99,6 +99,7 @@ RUN apt-get update &&\
 
 # Put the example scripts onto the image if people want to use them
 ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
+ADD pig/0.14.0/tutorial/* /apps/genie/pig/0.14.0/tutorial
 ADD example/*.py /apps/genie/example/
 
 EXPOSE 8080
