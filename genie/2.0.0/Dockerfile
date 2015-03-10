@@ -19,7 +19,7 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie -Darchaius.deployment.environment=dev"
 
 # Download and configure the Genie WAR file and Genie Jobs directory where job results will be stored
-RUN wget -q -P /tomcat/webapps 'http://repo1.maven.org/maven2/com/netflix/genie/genie-web/2.0.0/genie-web-2.0.0.war' &&\
+RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/genie-web/2.0.0/genie-web-2.0.0.war' &&\
   mkdir /tomcat/webapps/ROOT &&\
   cd /tomcat/webapps/ROOT &&\
   jar xf ../genie-web-2.0.0.war &&\
