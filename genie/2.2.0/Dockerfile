@@ -16,7 +16,7 @@ FROM netflixoss/tomcat:7
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 # Properties to set
-ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie -Darchaius.deployment.environment=dev"
+ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicationId=genie -Darchaius.deployment.environment=prod"
 
 # Lots of commands to configure the Genie system grouped together to save on filesystem layers in Docker
 # (Lines 28-33) Download and extract the Genie WAR file
@@ -40,12 +40,12 @@ RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/gen
   sed -i '23s/\/usr\/lib\/jvm\/java-1.7.0-sunjdk.x86_64/\/usr\/lib\/jvm\/java-7-oracle/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '26s/\/apps\/hadoop\/current/\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '27s/com.netflix.genie.server.hadoop.2.4.0.home=\/apps\/hadoop\/2.4.0/com.netflix.genie.server.hadoop.2.6.0.home=\/apps\/hadoop\/2.6.0/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '41s/7001/8080/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '81s/\/mnt\/tomcat\/genie-jobs/\/tomcat\/webapps\/genie-jobs/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '96,103d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '96icom.netflix.genie.server.job.manager.yarn.command.cp=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -cp -f' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '99,106d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
-  sed -i '99icom.netflix.genie.server.job.manager.yarn.command.mkdir=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -mkdir' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '43s/7001/8080/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '83s/\/mnt\/tomcat\/genie-jobs/\/tomcat\/webapps\/genie-jobs/' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '98,105d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '99icom.netflix.genie.server.job.manager.yarn.command.cp=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -cp -f' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '101,108d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
+  sed -i '101icom.netflix.genie.server.job.manager.yarn.command.mkdir=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -mkdir' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   mkdir -p /apps/genie/bin &&\
   wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.0/root/apps/genie/bin/jobkill.sh' &&\
   chmod 755 /apps/genie/bin/jobkill.sh &&\
