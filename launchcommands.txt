@@ -44,3 +44,13 @@ https://SKETCHY_NGINX/eager?url=http://google.com&type=sketch
 
 ## Edda ##
 docker run -d --name edda -v `pwd`/edda/2.1/edda.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/edda.properties netflixoss/edda:2.1
+
+## SIMIAN ARMY ##
+docker run -d --name simian-army \
+  -v `pwd`/simian-army/2.5-SNAPSHOT/chaos.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/chaos.properties \
+  -v `pwd`/simian-army/2.5-SNAPSHOT/client.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/client.properties \
+  -v `pwd`/simian-army/2.5-SNAPSHOT/conformity.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/conformity.properties \
+  -v `pwd`/simian-army/2.5-SNAPSHOT/janitor.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/janitor.properties \
+  -v `pwd`/simian-army/2.5-SNAPSHOT/simianarmy.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/simianarmy.properties \
+  -v `pwd`/simian-army/2.5-SNAPSHOT/volumeTagging.properties.mine:/tomcat/webapps/ROOT/WEB-INF/classes/volumeTagging.properties \
+  netflixoss/simian-army:2.5-SNAPSHOT

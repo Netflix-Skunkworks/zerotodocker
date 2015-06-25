@@ -97,3 +97,8 @@ cd ../..
 cd genie/2.1.0
 docker build -t netflixoss/genie:2.1.0 .
 cd ../..
+
+## SIMIAN ARMY ##
+cd simian-army/2.5-SNAPSHOT
+docker build -t netflixoss/simian-army:2.5-SNAPSHOT .
+cd ../..
