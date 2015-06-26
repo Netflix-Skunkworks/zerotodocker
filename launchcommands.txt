@@ -50,4 +50,4 @@ docker run -d --name edda -v `pwd`/edda/2.1/edda.properties.mine:/tomcat/webapps
 # https://github.com/Netflix-Skunkworks/zerotodocker/wiki/Genie
 
 docker run --name mysql-genie -e MYSQL_ROOT_PASSWORD=genie -e MYSQL_DATABASE=genie -d mysql:5.6.21
-docker run --name genie --link mysql-genie:mysql-genie -d netflixoss/genie:2.2.0
+docker run --name genie --link mysql-genie:mysql-genie -d netflixoss/genie:2.2.1
