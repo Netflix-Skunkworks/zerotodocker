@@ -25,14 +25,14 @@ ENV CATALINA_OPTS="-Dspring.profiles.active=prod -Darchaius.deployment.applicati
 # (38-39) Configure the database connection to use mysql-genie Docker link as hostname and the correct password
 # (40-48) Modify default properties to map to the Docker image locations and settings
 # (49-58) Download and configure all the Genie scripts that are used to run jobs
-RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/genie-web/2.2.0/genie-web-2.2.0.war' &&\
+RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/genie-web/2.2.1/genie-web-2.2.1.war' &&\
   mkdir /tomcat/webapps/ROOT &&\
   cd /tomcat/webapps/ROOT &&\
   jar xf ../genie-web-2.2.0.war &&\
   cd .. &&\
   rm genie-web-2.2.0.war &&\
   mkdir /tomcat/webapps/genie-jobs &&\
-  wget -q -P /tomcat/conf 'https://raw.githubusercontent.com/Netflix/genie/2.2.0/root/apps/tomcat/conf/listings.xsl' &&\
+  wget -q -P /tomcat/conf 'https://raw.githubusercontent.com/Netflix/genie/2.2.1/root/apps/tomcat/conf/listings.xsl' &&\
   sed -i '111s/false/true/' /tomcat/conf/web.xml &&\
   sed -i '113i\ \ \ \ \ \ \ \ <init-param>\n\ \ \ \ \ \ \ \ \ \ \ \ <param-name>globalXsltFile<\/param-name>\n\ \ \ \ \ \ \ \ \ \ \ \ <param-value>\/tomcat\/conf\/listings.xsl<\/param-value>\n\ \ \ \ \ \ \ \ <\/init-param>' /tomcat/conf/web.xml &&\
   sed -i '69s/127.0.0.1/mysql-genie/' /tomcat/webapps/ROOT/WEB-INF/classes/genie-jpa.xml &&\
@@ -46,14 +46,14 @@ RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/gen
   sed -i '101,108d' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   sed -i '101icom.netflix.genie.server.job.manager.yarn.command.mkdir=\/apps\/hadoop\/2.6.0\/bin\/hadoop fs -mkdir' /tomcat/webapps/ROOT/WEB-INF/classes/genie.properties &&\
   mkdir -p /apps/genie/bin &&\
-  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.0/root/apps/genie/bin/jobkill.sh' &&\
+  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.1/root/apps/genie/bin/jobkill.sh' &&\
   chmod 755 /apps/genie/bin/jobkill.sh &&\
-  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.0/root/apps/genie/bin/joblauncher.sh' &&\
+  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.1/root/apps/genie/bin/joblauncher.sh' &&\
   chmod 755 /apps/genie/bin/joblauncher.sh &&\
   sed -i '233s/conf/etc\/hadoop/' /apps/genie/bin/joblauncher.sh &&\
-  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.0/root/apps/genie/bin/localCleanup.py' &&\
+  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.1/root/apps/genie/bin/localCleanup.py' &&\
   chmod 755 /apps/genie/bin/localCleanup.py &&\
-  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.0/root/apps/genie/bin/timeout3' &&\
+  wget -q -P /apps/genie/bin 'https://raw.githubusercontent.com/Netflix/genie/2.2.1/root/apps/genie/bin/timeout3' &&\
   chmod 755 /apps/genie/bin/timeout3
 
 # Below here optional to run Genie and can be different for different deployments
