@@ -59,6 +59,12 @@ RUN wget -q -P /tomcat/webapps 'http://jcenter.bintray.com/com/netflix/genie/gen
 
 # Below here optional to run Genie and can be different for different deployments
 
+# Install some packages that will be used for the example
+RUN apt-get update &&\
+  DEBIAN_FRONTEND=noninteractive apt-get -y install ant python python-pip vim &&\
+  python -m pip install --no-input --upgrade --force pip &&\
+  pip install nflx-genie-client==2.1.0
+
 # Download and configure hadoop client
 RUN mkdir -p /apps/hadoop/2.6.0 &&\
   cd /apps/hadoop/2.6.0 &&\
@@ -88,18 +94,33 @@ RUN mkdir -p /apps/pig/0.14.0 &&\
   mv pig-0.14.0/* . &&\
   rm -rf pig-0.14.0
 
+# Build the Pig examples
+ENV PIG_HOME=/apps/genie/pig/0.14.0
+
+RUN mkdir -p $PIG_HOME &&\
+  cd $PIG_HOME &&\
+  wget -q -P $PIG_HOME 'http://apache.cs.utah.edu/pig/pig-0.14.0/pig-0.14.0-src.tar.gz' &&\
+  tar xf pig-0.14.0-src.tar.gz &&\
+  mv pig-0.14.0-src/* . &&\
+  rm -rf pig-0.14.0-src pig-0.14.0-src.tar.gz &&\
+  ant &&\
+  cd tutorial &&\
+  ant &&\
+  mv pigtutorial.tar.gz /tmp &&\
+  cd .. &&\
+  rm -rf * &&\
+  mkdir tutorial &&\
+  mv /tmp/pigtutorial.tar.gz tutorial/ &&\
+  cd tutorial &&\
+  tar xf pigtutorial.tar.gz &&\
+  mv pigtmp/* . &&\
+  rm -rf pigtmp pigtutorial.tar.gz
+
 ENV PIG_HOME=/apps/pig/0.14.0
 ENV PATH=$PIG_HOME/bin:$PATH
 
-# Install some packages that will be used for the example
-RUN apt-get update &&\
-  DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip vim &&\
-  python -m pip install --no-input --upgrade --force pip &&\
-  pip install nflx-genie-client==2.1.0
-
 # Put the example scripts onto the image if people want to use them
 ADD hadoop/2.6.0/conf/*.xml /apps/genie/hadoop/2.6.0/conf/
-ADD pig/0.14.0/tutorial/* /apps/genie/pig/0.14.0/tutorial/
 ADD example/*.py /apps/genie/example/
 
 EXPOSE 8080

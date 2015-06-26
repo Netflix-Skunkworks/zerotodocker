@@ -97,3 +97,7 @@ cd ../..
 cd genie/2.1.0
 docker build -t netflixoss/genie:2.1.0 .
 cd ../..
+
+cd genie/2.2.1
+docker build -t netflixoss/genie:2.2.1 .
+cd ../..
