@@ -9,4 +9,4 @@ echo "DONE CREATING sleepypuppydb..."
 
 cd /usr/local/src/sleepy-puppy
 python manage.py setup_sleepy_puppy
-python manage.py runserver --host 0.0.0.0 --port 8000
+gunicorn -w 4 -b 0.0.0.0:8000 sleepypuppy:app
