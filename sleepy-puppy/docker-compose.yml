@@ -1,0 +1,43 @@
+sleepy-puppy-web:
+  restart: always
+  build: ./web
+  expose:
+    - "8000"
+  links:
+    - postgres:postgres
+  volumes:
+    - /usr/local/src/sleepy-puppy/sleepypuppy/static
+  environment:
+    DEBUG: False
+    sleepypuppy_db: postgresql://postgres:password@postgres/sleepypuppydb
+    secret_key: 5(15ds+i2+%ik6z&!yer+ga9m=e%jcqiz_5wszg)r-z!2--b2d
+    csrf_session_key: 5(18ds+i2+%ik6z&!yer+ga9m=e%jcqiz_5wszg)r-z!2--b2d
+    DOCKER_ADMIN_PASS: password
+
+sleepy-puppy-nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /www/static
+  volumes_from:
+    - sleepy-puppy-web
+  links:
+    - sleepy-puppy-web
+    - sleepy-puppy-web:web
+
+# data:
+#  restart: always
+#  image: postgres:latest
+#  volumes:
+#    - /var/lib/postgresql
+#  command: /bin/true
+
+postgres:
+  restart: always
+  image: postgres:latest
+  # volumes_from:
+  #  - data
+  ports:
+    - "5432"
