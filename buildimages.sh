@@ -101,3 +101,14 @@ cd ../..
 cd genie/2.2.1
 docker build -t netflixoss/genie:2.2.1 .
 cd ../..
+
+## Sleepy Puppy ##
+
+cd sleepy-puppy/web
+docker build -t netflixoss/sleepy-puppy-web:0.2.0 .
+cd ../..
+
+cd sleepy-puppy/nginx
+docker build -t netflixoss/sleepy-puppy-nginx:0.2.0 .
+cd ../..
+

@@ -51,3 +51,10 @@ docker run -d --name edda -v `pwd`/edda/2.1/edda.properties.mine:/tomcat/webapps
 
 docker run --name mysql-genie -e MYSQL_ROOT_PASSWORD=genie -e MYSQL_DATABASE=genie -d mysql:5.6.21
 docker run --name genie --link mysql-genie:mysql-genie -d netflixoss/genie:2.2.1
+
+## Sleepy Puppy ##
+# Sleepy Puppy uses docker-compose (previously fig.sh) to launch
+
+cd sleepy-puppy/
+docker-compose up
+
