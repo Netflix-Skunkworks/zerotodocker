@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM nginx:1.7.7
+FROM nginx:1.11.4
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 RUN apt-get update &&\
