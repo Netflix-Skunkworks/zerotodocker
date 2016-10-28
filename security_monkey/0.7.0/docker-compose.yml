@@ -26,6 +26,8 @@ services:
       - postgres
     env_file: secmonkey.env
     entrypoint: ["/bin/bash", "/usr/local/src/security_monkey/docker/api-start.sh"]
+    volumes:
+      - ./security_monkey-scheduler/config-deploy.py:/usr/local/src/security_monkey/env-config/config-deploy.py
 
   scheduler:
     container_name: secmonkey-scheduler
@@ -34,6 +36,8 @@ services:
       - api
     env_file: secmonkey.env
     entrypoint: ["/bin/bash", "/usr/local/src/security_monkey/docker/scheduler-start.sh"]
+    volumes_from:
+      - api
 
   nginx:
     container_name: secmonkey-nginx
