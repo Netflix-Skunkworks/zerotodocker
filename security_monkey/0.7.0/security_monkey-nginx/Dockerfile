@@ -35,6 +35,7 @@ RUN /bin/mkdir -p /var/log/security_monkey/ &&\
   /usr/bin/touch /var/log/security_monkey/security_monkey.access.log &&\
   /usr/bin/touch /var/log/security_monkey/security_monkey.error.log
 
+WORKDIR /etc/nginx
 EXPOSE 443
 
 ADD securitymonkey.conf /etc/nginx/conf.d/securitymonkey.conf
