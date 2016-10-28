@@ -24,8 +24,19 @@ services:
     build: .
     depends_on:
       - postgres
+      - init
     env_file: secmonkey.env
     entrypoint: ["/bin/bash", "/usr/local/src/security_monkey/docker/api-start.sh"]
+    volumes_from:
+      - scheduler
+
+  init:
+    container_name: secmonkey-init
+    build: .
+    depends_on:
+      - postgres
+    env_file: secmonkey.env
+    entrypoint: ["/bin/bash", "/usr/local/src/security_monkey/docker/api-init.sh"]
     volumes_from:
       - scheduler
     
