@@ -15,21 +15,29 @@
 FROM ubuntu:14.04
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
+ENV SECURITY_MONKEY_VERSION=v0.7.0  \
+    SECURITY_MONKEY_SETTINGS=/usr/local/src/security_monkey/env-config/config-deploy.py
+
 RUN apt-get update &&\
   apt-get -y -q install python-software-properties software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3 curl &&\
-  apt-get install -y python-pip python-dev python-psycopg2 libpq-dev git sudo swig python-m2crypto &&\
-  cd /usr/local/src &&\
-  git clone -b v0.3.4 --branch master https://github.com/Netflix/security_monkey.git &&\
-  cd security_monkey &&\
-  python setup.py install &&\
-  /bin/mkdir -p /var/log/security_monkey/
+  apt-get install -y python-pip python-dev python-psycopg2 libffi-dev libpq-dev libyaml-dev libxml2-dev libxmlsec1-dev git sudo swig python-m2crypto &&\
+  apt-get clean autoclean autoremove && rm -rf /var/lib/apt/lists/*
 
-ADD api-start.sh /usr/local/src/security_monkey/scripts/api-start.sh
-ADD config-deploy.py /usr/local/src/security_monkey/env-config/config-deploy.py
+RUN cd /usr/local/src &&\
+  git clone --branch $SECURITY_MONKEY_VERSION https://github.com/Netflix/security_monkey.git
 
-RUN chmod +x /usr/local/src/security_monkey/scripts/api-start.sh
+RUN python setup.py install &&\
+  /bin/mkdir -pv /var/log/security_monkey /usr/local/src/security_monkey/templates &&\
+  touch /var/log/security_monkey/security_monkey-deploy.log /var/log/security_monkey/securitymonkey.log
+
+ADD security_monkey-api/api-start.sh /usr/local/src/security_monkey/scripts/api-start.sh
+ADD security_monkey-apiinit/api-init.sh /usr/local/src/security_monkey/scripts/api-init.sh
+ADD security_monkey-scheduler/scheduler-start.sh /usr/local/src/security_monkey/scripts/scheduler-start.sh
+
+RUN chmod +x /usr/local/src/security_monkey/scripts/*.sh
 
 EXPOSE 5000
 
+WORKDIR /usr/local/src/security_monkey
 ENTRYPOINT ["/usr/local/src/security_monkey/scripts/api-start.sh"]
 

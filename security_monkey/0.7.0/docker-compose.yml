@@ -1,0 +1,50 @@
+---
+
+###
+#
+# Documentation: http://securitymonkey.readthedocs.io/en/latest/index.html
+#
+# shortcuts
+# open https://$(docker-machine active | xargs docker-machine ip)
+#
+###
+
+version: '2'
+# volumes:
+#    - postgres-data: {}
+services:
+  postgres:
+    container_name: secmonkey-db
+    image: postgres:9
+    # volumes:
+    #    - ./postgres-data/:/var/lib/postgresql/data
+
+  api:
+    container_name: secmonkey-api
+    build: .
+    depends_on:
+      - postgres
+    env_file: secmonkey.env
+    entrypoint: ["/bin/bash", "/usr/local/src/security_monkey/docker/api-start.sh"]
+
+  scheduler:
+    container_name: secmonkey-scheduler
+    build: .
+    depends_on:
+      - api
+    env_file: secmonkey.env
+    entrypoint: ["/bin/bash", "/usr/local/src/security_monkey/docker/scheduler-start.sh"]
+
+  nginx:
+    container_name: secmonkey-nginx
+    build:
+      context: ./
+      dockerfile: ./security_monkey-nginx/Dockerfile
+    working_dir: /etc/nginx
+    depends_on:
+      - api
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - api:smapi
