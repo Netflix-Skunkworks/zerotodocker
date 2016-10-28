@@ -37,13 +37,10 @@ RUN /bin/mkdir -p /var/log/security_monkey/ &&\
 
 EXPOSE 443
 
-ADD securitymonkey.conf /etc/nginx/sites-available/securitymonkey.conf
+ADD securitymonkey.conf /etc/nginx/conf.d/securitymonkey.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 ADD server.crt /etc/nginx/ssl/
 ADD server.key /etc/nginx/ssl/
-
-RUN /bin/mkdir -p /etc/nginx/sites-enabled/ &&\
-  ln -s /etc/nginx/sites-available/securitymonkey.conf /etc/nginx/sites-enabled/securitymonkey.conf
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
