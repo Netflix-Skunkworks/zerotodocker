@@ -15,18 +15,22 @@
 FROM nginx:1.11.4
 MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
+ENV SECURITY_MONKEY_VERSION=v0.7.0
 RUN apt-get update &&\
   apt-get install -y curl git sudo apt-transport-https &&\
-  cd /usr/local/src &&\
-  git clone -b v0.3.4 https://github.com/Netflix/security_monkey.git &&\
-  cd security_monkey
+  apt-get clean autoclean autoremove && rm -rf /var/lib/apt/lists/*
+
+RUN cd /usr/local/src &&\
+  git clone -b $SECURITY_MONKEY_VERSION https://github.com/Netflix/security_monkey.git
 
 RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
   curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list && \
   apt-get update &&\
-  apt-get install -y -q dart
+  apt-get install -y -q dart &&\
+  apt-get clean autoclean autoremove && rm -rf /var/lib/apt/lists/*
 
 RUN cd /usr/local/src/security_monkey/dart &&\
+  /usr/lib/dart/bin/pub get &&\
   /usr/lib/dart/bin/pub build &&\
   /bin/mkdir -p /usr/local/src/security_monkey/security_monkey/static/ &&\
   /bin/cp -R /usr/local/src/security_monkey/dart/build/web/* /usr/local/src/security_monkey/security_monkey/static/

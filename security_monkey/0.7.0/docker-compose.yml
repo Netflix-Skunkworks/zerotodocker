@@ -38,7 +38,7 @@ services:
   nginx:
     container_name: secmonkey-nginx
     build:
-      context: ./
+      context: ./security_monkey-nginx
       dockerfile: ./security_monkey-nginx/Dockerfile
     working_dir: /etc/nginx
     depends_on:
