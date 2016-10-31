@@ -26,7 +26,8 @@ RUN apt-get update &&\
 RUN cd /usr/local/src &&\
   git clone --branch $SECURITY_MONKEY_VERSION https://github.com/Netflix/security_monkey.git
 
-RUN python setup.py install &&\
+RUN cd /usr/local/src/security_monkey &&\
+  python setup.py install &&\
   /bin/mkdir -pv /var/log/security_monkey /usr/local/src/security_monkey/templates &&\
   touch /var/log/security_monkey/security_monkey-deploy.log /var/log/security_monkey/securitymonkey.log
 

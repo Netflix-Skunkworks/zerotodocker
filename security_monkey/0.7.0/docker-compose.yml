@@ -24,11 +24,10 @@ services:
     build: .
     depends_on:
       - postgres
-      - init
     env_file: secmonkey.env
     entrypoint: ["/usr/local/src/security_monkey/scripts/api-start.sh"]
-    volumes_from:
-      - scheduler
+    volumes:
+      - ./security_monkey-scheduler/config-deploy.py:/usr/local/src/security_monkey/env-config/config-deploy.py
 
   init:
     container_name: secmonkey-init
@@ -36,9 +35,11 @@ services:
     depends_on:
       - postgres
     env_file: secmonkey.env
-    entrypoint: ["/usr/local/src/security_monkey/scripts/api-init.sh"]
+    entrypoint: # ["/usr/local/src/security_monkey/scripts/api-init.sh"]
+      - sleep
+      - 8h
     volumes_from:
-      - scheduler
+      - api
     
   scheduler:
     container_name: secmonkey-scheduler
@@ -47,14 +48,14 @@ services:
       - api
     env_file: secmonkey.env
     entrypoint: ["/usr/local/src/security_monkey/scripts/scheduler-start.sh"]
-    volumes:
-      - ./security_monkey-scheduler/config-deploy.py:/usr/local/src/security_monkey/env-config/config-deploy.py
+    volumes_from:
+      - api
 
   nginx:
     container_name: secmonkey-nginx
     build:
       context: ./security_monkey-nginx
-      dockerfile: ./security_monkey-nginx/Dockerfile
+      # dockerfile: ./Dockerfile
     working_dir: /etc/nginx
     depends_on:
       - api
