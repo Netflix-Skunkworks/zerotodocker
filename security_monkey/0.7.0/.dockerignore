@@ -1,3 +1,5 @@
 boto.cfg
 docker-compose.yml
 secmonkey.env
+*.example
+security_monkey-nginx

@@ -44,8 +44,6 @@ EXPOSE 443
 
 ADD securitymonkey.conf /etc/nginx/conf.d/securitymonkey.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-ADD server.crt /etc/nginx/ssl/
-ADD server.key /etc/nginx/ssl/
+ADD nginx-start.sh /usr/local/src/security_monkey/scripts/nginx-start.sh
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
+ENTRYPOINT ["/usr/local/src/security_monkey/scripts/nginx-start.sh"]

@@ -26,19 +26,14 @@ RUN apt-get update &&\
 RUN cd /usr/local/src &&\
   git clone --branch $SECURITY_MONKEY_VERSION https://github.com/Netflix/security_monkey.git
 
-RUN cd /usr/local/src/security_monkey &&\
-  python setup.py install &&\
-  /bin/mkdir -pv /var/log/security_monkey /usr/local/src/security_monkey/templates &&\
+WORKDIR /usr/local/src/security_monkey
+RUN python setup.py install &&\
+  /bin/mkdir -pv /var/log/security_monkey &&\
   touch /var/log/security_monkey/security_monkey-deploy.log /var/log/security_monkey/securitymonkey.log
 
-ADD security_monkey-api/api-start.sh /usr/local/src/security_monkey/scripts/api-start.sh
-ADD security_monkey-apiinit/api-init.sh /usr/local/src/security_monkey/scripts/api-init.sh
-ADD security_monkey-scheduler/scheduler-start.sh /usr/local/src/security_monkey/scripts/scheduler-start.sh
-
-RUN chmod +x /usr/local/src/security_monkey/scripts/*.sh
+COPY config-deploy.py /usr/local/src/security_monkey/env-config/
+ADD api-start.sh api-init.sh scheduler-start.sh /usr/local/src/security_monkey/scripts/
 
 EXPOSE 5000
 
-WORKDIR /usr/local/src/security_monkey
 ENTRYPOINT ["/usr/local/src/security_monkey/scripts/api-start.sh"]
-

@@ -14,49 +14,55 @@ version: '2'
 #    - postgres-data: {}
 services:
   postgres:
-    container_name: secmonkey-db
+    container_name: db
     image: postgres:9
     # volumes:
     #    - ./postgres-data/:/var/lib/postgresql/data
 
-  api:
-    container_name: secmonkey-api
-    build: .
-    depends_on:
-      - postgres
-    env_file: secmonkey.env
-    entrypoint: ["/usr/local/src/security_monkey/scripts/api-start.sh"]
-    volumes:
-      - ./security_monkey-scheduler/config-deploy.py:/usr/local/src/security_monkey/env-config/config-deploy.py
-
   init:
-    container_name: secmonkey-init
+    container_name: init
     build: .
     depends_on:
       - postgres
     env_file: secmonkey.env
+    volumes:
+      - ./config-deploy.py:/usr/local/src/security_monkey/env-config/config-deploy.py
+      - ./api-init.sh:/usr/local/src/security_monkey/scripts/api-init.sh
+      - ./api-start.sh:/usr/local/src/security_monkey/scripts/api-start.sh
+      - ./scheduler-start.sh:/usr/local/src/security_monkey/scripts/scheduler-start.sh
     entrypoint: # ["/usr/local/src/security_monkey/scripts/api-init.sh"]
       - sleep
       - 8h
+    
+  api:
+    container_name: api
+    build: .
+    depends_on:
+      - postgres
+    env_file: secmonkey.env
     volumes_from:
-      - api
+      - init
+    entrypoint: ["/usr/local/src/security_monkey/scripts/api-start.sh"]
     
   scheduler:
-    container_name: secmonkey-scheduler
+    container_name: scheduler
     build: .
     depends_on:
       - api
     env_file: secmonkey.env
     entrypoint: ["/usr/local/src/security_monkey/scripts/scheduler-start.sh"]
     volumes_from:
-      - api
+      - init
 
   nginx:
-    container_name: secmonkey-nginx
+    container_name: nginx
     build:
       context: ./security_monkey-nginx
-      # dockerfile: ./Dockerfile
     working_dir: /etc/nginx
+    volumes:
+      - ./security_monkey-nginx/server.crt:/etc/nginx/ssl/server.crt
+      - ./security_monkey-nginx/server.key:/etc/nginx/ssl/server.key
+      - ./security_monkey-nginx/nginx-start.sh:/usr/local/src/security_monkey/scripts/nginx-start.sh
     depends_on:
       - api
     ports:
