@@ -4,10 +4,6 @@ server {
     server_name sleepypuppy.io;
     charset utf-8;
 
-    location /static {
-        alias /usr/local/src/sleepy-puppy/sleepypuppy/static;
-        autoindex on;
-    }
 
     location / {
         proxy_pass http://web:8000;

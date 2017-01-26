@@ -18,7 +18,7 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 RUN apt-get update && apt-get -y -q install python-software-properties software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3 && apt-get install -y curl python-dev python-pip git sudo && apt-get -y -q install python-psycopg2 libpq-dev libffi-dev
 
 RUN cd /usr/local/src &&\
-  git clone --branch develop https://github.com/sbehrens/sleepy-puppy.git &&\
+  git clone --depth 1 -b 0.2.2b --branch master https://github.com/Netflix/sleepy-puppy.git &&\
   cd sleepy-puppy &&\
   python setup.py install
 

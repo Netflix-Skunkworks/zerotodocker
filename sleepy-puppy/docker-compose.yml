@@ -13,7 +13,7 @@ sleepy-puppy-web:
     secret_key: 5(15ds+i2+%ik6z&!yer+ga9m=e%jcqiz_5wszg)r-z!2--b2d
     csrf_session_key: 5(18ds+i2+%ik6z&!yer+ga9m=e%jcqiz_5wszg)r-z!2--b2d
     DOCKER_ADMIN_PASS: password
-
+    host: 192.168.59.103
 sleepy-puppy-nginx:
   restart: always
   build: ./nginx/
