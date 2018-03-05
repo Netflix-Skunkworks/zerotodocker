@@ -61,9 +61,9 @@ job.commandArgs = \
 # Submit the job to Genie
 job = genie.submitJob(job)
 
-while job.status != "SUCCEEDED" and job.status != "KILLED" and job.status != "FAILED":
-    print "Job " + job.id + " is " + job.status
+while job.status not in ("SUCCEEDED", "KILLED", "FAILED"):
+    print("Job " + job.id + " is " + job.status)
     time.sleep(10)
     job = genie.getJob(job.id)
 
-print "Job " + job.id + " finished with status " + job.status
+print("Job " + job.id + " finished with status " + job.status)
