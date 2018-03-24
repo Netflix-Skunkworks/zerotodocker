@@ -9,9 +9,9 @@ The Docker images created are [not intended to be used in production as is] (htt
 
 Ready to run? See Dockerhub for pre-built trusted images:
 
-[Dockerhub] (https://hub.docker.com/u/netflixoss/)
+[Dockerhub](https://hub.docker.com/u/netflixoss/)
 
 More details?  See the wiki and release announcement blog for information:
 
-[Wiki] (https://github.com/Netflix-Skunkworks/zerotodocker/wiki)
-[Blog] (http://techblog.netflix.com/2014/11/zerotodocker-easy-way-to-evaluate.html)
+[Wiki](https://github.com/Netflix-Skunkworks/zerotodocker/wiki)
+[Blog](http://techblog.netflix.com/2014/11/zerotodocker-easy-way-to-evaluate.html)
